@@ -2,91 +2,127 @@
 <html lang="pt-br">
 
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema da Loja</title>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Controle da Loja</title>
-
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-
-<link rel="stylesheet" href="style.css">
-
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<nav class="navbar navbar-dark bg-dark shadow">
-<div class="container">
-<a class="navbar-brand fw-bold">Loja de Celulares</a>
-</div>
-</nav>
+  <div class="bg-detalhe"></div>
 
-<div class="container mt-4">
+  <nav class="navbar navbar-dark navbar-custom">
+    <div class="container">
+      <span class="navbar-brand">
+        <i class="bi bi-shop"></i>
+        Controle da Loja
+      </span>
 
-<h3 class="text-center mb-3">Cadastrar Produto</h3>
+      <button onclick="logout()" class="btn btn-danger btn-sm btn-logout">
+        <i class="bi bi-box-arrow-right"></i> Sair
+      </button>
+    </div>
+  </nav>
 
-<div class="card shadow p-3">
+  <div class="container main-content">
 
-<form id="formProduto">
+    <div class="hero">
+      <h2>Painel da Loja</h2>
+      <p>Cadastre produtos, acompanhe o estoque e gerencie sua loja com mais organização.</p>
+    </div>
 
-<input type="text" id="nome" class="form-control mb-2" placeholder="Nome do produto" required>
+    <div class="info-mini">
+      <div class="mini-card">
+        <span>Produtos cadastrados</span>
+        <strong>0 produtos</strong>
+      </div>
 
-<input type="number" id="preco" class="form-control mb-2" placeholder="Preço">
+      <div class="mini-card">
+        <span>Total em estoque</span>
+        <strong>0 itens</strong>
+      </div>
 
-<input type="number" id="quantidade" class="form-control mb-2" placeholder="Quantidade">
+      <div class="mini-card">
+        <span>Ambiente</span>
+        <strong>Loja principal</strong>
+      </div>
+    </div>
 
-<select id="categoria" class="form-select mb-3">
+    <div class="row g-4">
+      <div class="col-lg-4">
+        <div class="glass-card p-4 h-100">
+          <div class="card-title-custom">
+            <i class="bi bi-box-seam"></i>
+            Cadastrar Produto
+          </div>
 
-<option>Celulares</option>
-<option>Capas</option>
-<option>Carregadores</option>
-<option>Fones de ouvido</option>
-<option>Películas</option>
-<option>Cabos USB</option>
-<option>Outros acessórios</option>
+          <form id="formProduto">
+            <input id="nome" class="form-control mb-3" placeholder="Nome do produto" required>
 
-</select>
+            <input id="preco" class="form-control mb-3" type="number" step="0.01" placeholder="Preço" required>
 
-<button class="btn btn-primary w-100">
-<i class="bi bi-plus-circle"></i> Salvar Produto
-</button>
+            <input id="quantidade" class="form-control mb-3" type="number" placeholder="Quantidade" required>
 
-</form>
+            <select id="categoria" class="form-select mb-3" required>
+              <option value="Celulares">Celulares</option>
+              <option value="Capas">Capas</option>
+              <option value="Carregadores">Carregadores</option>
+              <option value="Fones">Fones</option>
+              <option value="Películas">Películas</option>
+              <option value="Cabos">Cabos</option>
+            </select>
 
-</div>
+            <button type="submit" class="btn btn-primary w-100 btn-custom-primary">
+              <i class="bi bi-save"></i> Salvar Produto
+            </button>
+          </form>
+        </div>
+      </div>
 
-<hr>
+      <div class="col-lg-8">
+        <div class="glass-card p-4">
+          <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-3">
+            <div class="card-title-custom mb-0">
+              <i class="bi bi-grid"></i>
+              Produtos Cadastrados
+            </div>
 
-<h3 class="mt-3">Produtos</h3>
+            <span class="badge-soft">
+              Total cadastrados: 0
+            </span>
+          </div>
 
-<div class="table-responsive">
+          <div class="search-box mb-3">
+            <i class="bi bi-search"></i>
+            <input id="busca" class="form-control" placeholder="Pesquisar produto...">
+          </div>
 
-<table class="table table-striped">
+          <div class="table-responsive table-box">
+            <table class="table align-middle">
+              <thead>
+                <tr>
+                  <th>Produto</th>
+                  <th>Preço</th>
+                  <th>Quantidade</th>
+                  <th>Categoria</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="tabelaProdutos"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
 
-<thead class="table-dark">
+  </div>
 
-<tr>
-<th>Produto</th>
-<th>Preço</th>
-<th>Qtd</th>
-<th>Categoria</th>
-<th>Ações</th>
-</tr>
-
-</thead>
-
-<tbody id="tabelaProdutos"></tbody>
-
-</table>
-
-</div>
-
-</div>
-
-<script src="script.js"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="script.js"></script>
 </body>
+
 </html>

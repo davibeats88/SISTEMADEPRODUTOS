@@ -1,25 +1,352 @@
-body{
-
-background:#f4f6fb;
-
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.card{
-
-border-radius:12px;
-
+body {
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color: #ffffff;
 }
 
-button{
+/* FUNDO */
 
-font-size:16px;
-
-padding:10px;
-
+.bg-detalhe {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
 }
 
-table{
+.bg-detalhe::before,
+.bg-detalhe::after {
+  content: "";
+  position: absolute;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  filter: blur(60px);
+}
 
-font-size:14px;
+.bg-detalhe::before {
+  top: 30px;
+  left: 30px;
+}
 
+.bg-detalhe::after {
+  bottom: 30px;
+  right: 30px;
+}
+
+/* NAVBAR */
+
+.navbar-custom {
+  background: rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #ffffff !important;
+}
+
+.btn-logout {
+  border-radius: 10px;
+  font-weight: 700;
+  padding: 8px 14px;
+}
+
+/* CONTEÚDO */
+
+.main-content {
+  position: relative;
+  z-index: 1;
+  padding: 30px 0;
+}
+
+/* HERO */
+
+.hero {
+  margin-bottom: 25px;
+  padding: 28px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.10);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.22);
+}
+
+.hero h2 {
+  margin-bottom: 8px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.hero p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+/* MINI CARDS */
+
+.info-mini {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.mini-card {
+  padding: 18px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.mini-card span {
+  display: block;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.72);
+  margin-bottom: 6px;
+}
+
+.mini-card strong {
+  font-size: 1.2rem;
+  color: #ffffff;
+}
+
+/* CARDS */
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.10);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.22);
+  color: #ffffff;
+}
+
+.card-title-custom {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #ffffff;
+}
+
+/* FORMULÁRIOS */
+
+.form-control,
+.form-select {
+  min-height: 48px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+}
+
+.form-control::placeholder {
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.form-control:focus,
+.form-select:focus {
+  background: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.30);
+  box-shadow: none;
+}
+
+.form-select option {
+  color: #000000;
+}
+
+.btn-custom-primary {
+  border: none;
+  border-radius: 12px;
+  padding: 12px 18px;
+  font-weight: 700;
+  transition: transform 0.2s ease;
+}
+
+.btn-custom-primary:hover {
+  transform: translateY(-2px);
+}
+
+/* BUSCA */
+
+.search-box {
+  position: relative;
+}
+
+.search-box i {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  transform: translateY(-50%);
+  color: rgba(255, 255, 255, 0.70);
+}
+
+.search-box input {
+  padding-left: 40px;
+}
+
+/* BADGE SUPERIOR */
+
+.badge-soft {
+  display: inline-block;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: rgba(13, 110, 253, 0.18);
+  border: 1px solid rgba(13, 110, 253, 0.35);
+  color: #d9e8ff;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* TABELA */
+
+.table-box {
+  border-radius: 16px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.table-responsive {
+  border-radius: 16px;
+}
+
+.table {
+  margin-bottom: 0;
+  color: #ffffff;
+  vertical-align: middle;
+  --bs-table-bg: transparent;
+  --bs-table-striped-bg: transparent;
+  --bs-table-hover-bg: transparent;
+  --bs-table-color: #ffffff;
+  --bs-table-border-color: rgba(255, 255, 255, 0.08);
+}
+
+.table thead th {
+  background: rgba(255, 255, 255, 0.10);
+  color: #ffffff;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 16px;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.table tbody tr {
+  background: transparent;
+  transition: background 0.2s ease;
+}
+
+.table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.table tbody td {
+  color: #f4f7fb;
+  padding: 16px;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.table tbody td strong {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.table td,
+.table th {
+  text-align: center;
+}
+
+.table td:first-child,
+.table th:first-child {
+  text-align: left;
+}
+
+/* BADGE DE CATEGORIA */
+
+.categoria-badge {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(13, 110, 253, 0.18);
+  border: 1px solid rgba(13, 110, 253, 0.35);
+  color: #d9e8ff;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* BOTÕES DA TABELA */
+
+.table .btn {
+  border-radius: 10px;
+  font-weight: 700;
+  min-width: 38px;
+}
+
+.table .btn-success {
+  border: none;
+}
+
+.table .btn-warning {
+  color: #1b1b1b;
+  border: none;
+}
+
+.table .btn-danger {
+  border: none;
+}
+
+/* TOAST */
+
+.toast {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* RESPONSIVO */
+
+@media (max-width: 768px) {
+  .hero {
+    padding: 20px;
+  }
+
+  .card-title-custom {
+    font-size: 1.05rem;
+  }
+
+  .table thead th,
+  .table tbody td {
+    padding: 12px 10px;
+    font-size: 13px;
+  }
+
+  .mini-card strong {
+    font-size: 1.05rem;
+  }
 }

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Sistema da Loja</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    body{
+      height:100vh;
+      font-family:Arial, sans-serif;
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    }
+
+    /* sistema no fundo */
+    .sistema-fundo{
+      position:fixed;
+      inset:0;
+      z-index:0;
+      overflow:hidden;
+    }
+
+    .sistema-fundo iframe{
+      width:100%;
+      height:100%;
+      border:none;
+      filter:blur(5px);
+      opacity:0.35;
+      transform:scale(1.03);
+    }
+
+    /* camada escura */
+    .overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.25);
+      z-index:1;
+    }
+
+    /* card vidro */
+    .card-login{
+      position:relative;
+      z-index:2;
+      width:380px;
+      padding:30px;
+      border-radius:20px;
+      background:rgba(255,255,255,0.12);
+      backdrop-filter:blur(14px);
+      -webkit-backdrop-filter:blur(14px);
+      border:1px solid rgba(255,255,255,0.18);
+      box-shadow:0 8px 32px rgba(0,0,0,0.35);
+      color:#fff;
+      animation:subirFade 0.8s ease;
+    }
+
+    @keyframes subirFade{
+      from{
+        opacity:0;
+        transform:translateY(30px) scale(0.96);
+      }
+      to{
+        opacity:1;
+        transform:translateY(0) scale(1);
+      }
+    }
+
+    .logo{
+      width:75px;
+      height:75px;
+      margin:0 auto 15px;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:34px;
+      background:rgba(255,255,255,0.15);
+      border:1px solid rgba(255,255,255,0.25);
+      color:#fff;
+    }
+
+    .titulo{
+      text-align:center;
+      font-weight:bold;
+      margin-bottom:5px;
+    }
+
+    .subtitulo{
+      text-align:center;
+      font-size:14px;
+      color:rgba(255,255,255,0.75);
+      margin-bottom:25px;
+    }
+
+    .input-group-text{
+      background:rgba(255,255,255,0.12);
+      border:1px solid rgba(255,255,255,0.15);
+      color:#fff;
+    }
+
+    .form-control{
+      background:rgba(255,255,255,0.10);
+      border:1px solid rgba(255,255,255,0.15);
+      color:#fff;
+    }
+
+    .form-control::placeholder{
+      color:rgba(255,255,255,0.65);
+    }
+
+    .form-control:focus{
+      background:rgba(255,255,255,0.14);
+      color:#fff;
+      border-color:rgba(255,255,255,0.35);
+      box-shadow:none;
+    }
+
+    .btn-entrar{
+      border:none;
+      border-radius:12px;
+      padding:12px;
+      font-weight:bold;
+      transition:0.3s;
+    }
+
+    .btn-entrar:hover{
+      transform:translateY(-2px);
+    }
+
+    .form-check-label{
+      color:rgba(255,255,255,0.85);
+      font-size:14px;
+    }
+
+    .rodape-login{
+      text-align:center;
+      margin-top:18px;
+      font-size:13px;
+      color:rgba(255,255,255,0.7);
+    }
+
+    .toggle-senha{
+      cursor:pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sistema-fundo">
+    <iframe src="index.html"></iframe>
+  </div>
+
+  <div class="overlay"></div>
+
+  <div class="card-login">
+    <div class="logo">
+      <i class="bi bi-shop"></i>
+    </div>
+
+    <h3 class="titulo">Sistema da Loja</h3>
+    <p class="subtitulo">Faça login para acessar o sistema</p>
+
+    <form id="formLogin">
+      <div class="input-group mb-3">
+        <span class="input-group-text">
+          <i class="bi bi-person"></i>
+        </span>
+        <input 
+          type="text"
+          id="usuario"
+          class="form-control"
+          placeholder="Usuário"
+          required>
+      </div>
+
+      <div class="input-group mb-2">
+        <span class="input-group-text">
+          <i class="bi bi-lock"></i>
+        </span>
+        <input 
+          type="password"
+          id="senha"
+          class="form-control"
+          placeholder="Senha"
+          required>
+        <span class="input-group-text toggle-senha" id="toggleSenha">
+          <i class="bi bi-eye" id="iconeSenha"></i>
+        </span>
+      </div>
+
+      <div class="form-check mb-3">
+        <input class="form-check-input" type="checkbox" id="mostrarSenha">
+        <label class="form-check-label" for="mostrarSenha">
+          Mostrar senha
+        </label>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100 btn-entrar" id="btnEntrar">
+        <span id="textoBotao">
+          <i class="bi bi-box-arrow-in-right"></i> Entrar
+        </span>
+        <span id="loadingBotao" class="d-none">
+          <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          Entrando...
+        </span>
+      </button>
+    </form>
+
+    <div class="rodape-login">
+      Acesso restrito ao sistema
+    </div>
+  </div>
+
+  <script>
+    const formLogin = document.getElementById("formLogin");
+    const usuario = document.getElementById("usuario");
+    const senha = document.getElementById("senha");
+    const btnEntrar = document.getElementById("btnEntrar");
+    const textoBotao = document.getElementById("textoBotao");
+    const loadingBotao = document.getElementById("loadingBotao");
+    const mostrarSenha = document.getElementById("mostrarSenha");
+    const toggleSenha = document.getElementById("toggleSenha");
+    const iconeSenha = document.getElementById("iconeSenha");
+
+    function alternarSenha(){
+      if(senha.type === "password"){
+        senha.type = "text";
+        iconeSenha.className = "bi bi-eye-slash";
+        mostrarSenha.checked = true;
+      }else{
+        senha.type = "password";
+        iconeSenha.className = "bi bi-eye";
+        mostrarSenha.checked = false;
+      }
+    }
+
+    mostrarSenha.addEventListener("change", function(){
+      if(this.checked){
+        senha.type = "text";
+        iconeSenha.className = "bi bi-eye-slash";
+      }else{
+        senha.type = "password";
+        iconeSenha.className = "bi bi-eye";
+      }
+    });
+
+    toggleSenha.addEventListener("click", alternarSenha);
+
+    formLogin.addEventListener("submit", function(e){
+      e.preventDefault();
+
+      textoBotao.classList.add("d-none");
+      loadingBotao.classList.remove("d-none");
+      btnEntrar.disabled = true;
+
+      setTimeout(() => {
+        if(usuario.value === "admin" && senha.value === "1234"){
+          localStorage.setItem("logado", "true");
+          window.location = "index.html";
+        }else{
+          alert("Usuário ou senha incorretos");
+          textoBotao.classList.remove("d-none");
+          loadingBotao.classList.add("d-none");
+          btnEntrar.disabled = false;
+        }
+      }, 1500);
+    });
+  </script>
+
+</body>
+</html>
