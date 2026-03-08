@@ -1,3 +1,14 @@
+/*
+  Sistema da Loja
+  Desenvolvido por: Davi Paulino
+  Ano: 2026
+  GitHub: github.com/davibeats88
+*/
+
+console.log("%cSistema da Loja", "font-size:18px;font-weight:bold;color:#4f8cff;");
+console.log("%cDesenvolvido por Davi Paulino © 2026", "font-size:13px;color:#9ec0ff;");
+console.log("%cGitHub: github.com/davibeats88", "font-size:12px;color:#b7c5dc;");
+
 document.addEventListener("DOMContentLoaded", function () {
   const formProduto = document.getElementById("formProduto");
   const nomeInput = document.getElementById("nome");
@@ -297,6 +308,7 @@ Total: R$ 0,00
 Data: --
 --------------------------------
 Obrigado pela preferência
+Sistema desenvolvido por Davi Paulino
       `;
       return;
     }
@@ -314,6 +326,7 @@ Total: ${formatarMoeda(venda.total)}
 Data: ${formatarData(venda.data)}
 --------------------------------
 Obrigado pela preferência
+Sistema desenvolvido por Davi Paulino
     `;
   }
 
@@ -492,6 +505,7 @@ Total: ${formatarMoeda(ultimaVenda.total)}
 Data: ${formatarData(ultimaVenda.data)}
 --------------------------------
 Obrigado pela preferência
+Sistema desenvolvido por Davi Paulino
           </div>
         </body>
       </html>

@@ -60,6 +60,21 @@ body {
   z-index: 0;
 }
 
+.marca-autor {
+  position: fixed;
+  right: 18px;
+  bottom: 16px;
+  z-index: 1;
+  opacity: 0.18;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  color: var(--text);
+  pointer-events: none;
+  user-select: none;
+  text-transform: uppercase;
+}
+
 .navbar-custom {
   background: rgba(5, 14, 28, 0.75);
   backdrop-filter: blur(12px);
@@ -90,7 +105,7 @@ body.tema-claro .navbar-brand {
   position: relative;
   z-index: 1;
   padding-top: 32px;
-  padding-bottom: 48px;
+  padding-bottom: 30px;
 }
 
 .hero {
@@ -404,6 +419,20 @@ body.tema-claro .comprovante-box {
   color: var(--muted) !important;
 }
 
+.footer-autoria {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 18px 16px 26px;
+  font-size: 14px;
+  color: var(--muted);
+  opacity: 0.95;
+}
+
+.footer-autoria strong {
+  color: var(--text);
+}
+
 #tabelaHistoricoVendas td,
 #tabelaHistoricoVendas th,
 #tabelaProdutos td,
@@ -424,7 +453,7 @@ body.tema-claro .comprovante-box {
 @media (max-width: 576px) {
   .main-content {
     padding-top: 24px;
-    padding-bottom: 32px;
+    padding-bottom: 24px;
   }
 
   .hero,
@@ -441,5 +470,16 @@ body.tema-claro .comprovante-box {
   .btn-theme {
     margin-right: 0;
     margin-bottom: 0;
+  }
+
+  .marca-autor {
+    font-size: 10px;
+    right: 10px;
+    bottom: 10px;
+  }
+
+  .footer-autoria {
+    font-size: 13px;
+    padding: 16px 14px 22px;
   }
 }
