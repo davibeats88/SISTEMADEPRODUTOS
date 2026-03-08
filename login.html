@@ -5,279 +5,550 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login - Sistema da Loja</title>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 
   <style>
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
+    :root {
+      --bg-1: #07111f;
+      --bg-2: #0d1b2f;
+      --bg-3: #102542;
+      --card: rgba(255, 255, 255, 0.08);
+      --card-border: rgba(255, 255, 255, 0.14);
+      --text: #eef4ff;
+      --muted: #b7c5dc;
+      --primary: #4f8cff;
+      --primary-hover: #3f7bf0;
+      --shadow: 0 18px 40px rgba(0, 0, 0, 0.25);
     }
 
-    body{
-      height:100vh;
-      font-family:Arial, sans-serif;
-      overflow:hidden;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    * {
+      box-sizing: border-box;
     }
 
-    /* sistema no fundo */
-    .sistema-fundo{
-      position:fixed;
-      inset:0;
-      z-index:0;
-      overflow:hidden;
+    body {
+      margin: 0;
+      font-family: "Inter", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(79, 140, 255, 0.18), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(32, 201, 151, 0.12), transparent 30%),
+        linear-gradient(135deg, var(--bg-1), var(--bg-2), var(--bg-3));
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
     }
 
-    .sistema-fundo iframe{
-      width:100%;
-      height:100%;
-      border:none;
-      filter:blur(5px);
-      opacity:0.35;
-      transform:scale(1.03);
+    .bg-detalhe {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.05), transparent 20%),
+        radial-gradient(circle at 80% 30%, rgba(79,140,255,0.10), transparent 18%),
+        radial-gradient(circle at 70% 80%, rgba(32,201,151,0.08), transparent 18%);
+      z-index: 0;
     }
 
-    /* camada escura */
-    .overlay{
-      position:fixed;
-      inset:0;
-      background:rgba(0,0,0,0.25);
-      z-index:1;
+    .login-wrapper {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 430px;
     }
 
-    /* card vidro */
-    .card-login{
-      position:relative;
-      z-index:2;
-      width:380px;
-      padding:30px;
-      border-radius:20px;
-      background:rgba(255,255,255,0.12);
-      backdrop-filter:blur(14px);
-      -webkit-backdrop-filter:blur(14px);
-      border:1px solid rgba(255,255,255,0.18);
-      box-shadow:0 8px 32px rgba(0,0,0,0.35);
-      color:#fff;
-      animation:subirFade 0.8s ease;
+    .login-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(14px);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      padding: 34px 28px;
     }
 
-    @keyframes subirFade{
-      from{
-        opacity:0;
-        transform:translateY(30px) scale(0.96);
+    .brand-box {
+      text-align: center;
+      margin-bottom: 26px;
+    }
+
+    .brand-icon {
+      width: 78px;
+      height: 78px;
+      margin: 0 auto 16px;
+      border-radius: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(79, 140, 255, 0.22), rgba(255,255,255,0.08));
+      border: 1px solid rgba(255,255,255,0.12);
+      font-size: 2rem;
+      color: #9ec0ff;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+    }
+
+    .brand-box h1 {
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .brand-box p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.97rem;
+      line-height: 1.6;
+    }
+
+    .form-label {
+      color: #dbe7fb;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .input-icon-wrap {
+      position: relative;
+    }
+
+    .input-icon-wrap .icone-esquerda {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255,255,255,0.62);
+      font-size: 1rem;
+      z-index: 2;
+    }
+
+    .form-control {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #fff;
+      border-radius: 14px;
+      min-height: 50px;
+      padding-left: 44px;
+    }
+
+    .form-control::placeholder {
+      color: rgba(255,255,255,0.55);
+    }
+
+    .form-control:focus {
+      background: rgba(255,255,255,0.10);
+      color: #fff;
+      border-color: rgba(79,140,255,0.8);
+      box-shadow: 0 0 0 0.18rem rgba(79,140,255,0.18);
+    }
+
+    .form-control:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    .campo-senha {
+      padding-right: 52px;
+    }
+
+    .btn-mostrar-senha {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      border: none;
+      background: transparent;
+      color: rgba(255,255,255,0.72);
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 3;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .btn-mostrar-senha:hover {
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+    }
+
+    .btn-mostrar-senha:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .btn-login {
+      border: none;
+      min-height: 50px;
+      border-radius: 14px;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--primary), #72a4ff);
+      color: #fff;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .btn-login:hover {
+      background: linear-gradient(135deg, var(--primary-hover), #6298ff);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    .btn-login:disabled {
+      opacity: 0.75;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .login-footer {
+      margin-top: 18px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .login-info {
+      margin-top: 22px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.10);
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+
+    .alert-custom {
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.08);
+      font-weight: 600;
+    }
+
+    .tentativas-box {
+      margin-top: 14px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .loading-box {
+      display: none;
+      margin-top: 18px;
+    }
+
+    .loading-box.ativo {
+      display: block;
+    }
+
+    .loading-texto {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .progress {
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      border-radius: 999px;
+      font-weight: 700;
+      transition: width 0.2s linear;
+    }
+
+    @media (max-width: 576px) {
+      .login-card {
+        padding: 28px 20px;
+        border-radius: 22px;
       }
-      to{
-        opacity:1;
-        transform:translateY(0) scale(1);
+
+      .brand-box h1 {
+        font-size: 1.55rem;
       }
-    }
-
-    .logo{
-      width:75px;
-      height:75px;
-      margin:0 auto 15px;
-      border-radius:50%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:34px;
-      background:rgba(255,255,255,0.15);
-      border:1px solid rgba(255,255,255,0.25);
-      color:#fff;
-    }
-
-    .titulo{
-      text-align:center;
-      font-weight:bold;
-      margin-bottom:5px;
-    }
-
-    .subtitulo{
-      text-align:center;
-      font-size:14px;
-      color:rgba(255,255,255,0.75);
-      margin-bottom:25px;
-    }
-
-    .input-group-text{
-      background:rgba(255,255,255,0.12);
-      border:1px solid rgba(255,255,255,0.15);
-      color:#fff;
-    }
-
-    .form-control{
-      background:rgba(255,255,255,0.10);
-      border:1px solid rgba(255,255,255,0.15);
-      color:#fff;
-    }
-
-    .form-control::placeholder{
-      color:rgba(255,255,255,0.65);
-    }
-
-    .form-control:focus{
-      background:rgba(255,255,255,0.14);
-      color:#fff;
-      border-color:rgba(255,255,255,0.35);
-      box-shadow:none;
-    }
-
-    .btn-entrar{
-      border:none;
-      border-radius:12px;
-      padding:12px;
-      font-weight:bold;
-      transition:0.3s;
-    }
-
-    .btn-entrar:hover{
-      transform:translateY(-2px);
-    }
-
-    .form-check-label{
-      color:rgba(255,255,255,0.85);
-      font-size:14px;
-    }
-
-    .rodape-login{
-      text-align:center;
-      margin-top:18px;
-      font-size:13px;
-      color:rgba(255,255,255,0.7);
-    }
-
-    .toggle-senha{
-      cursor:pointer;
     }
   </style>
 </head>
 <body>
+  <div class="bg-detalhe"></div>
 
-  <div class="sistema-fundo">
-    <iframe src="index.html"></iframe>
-  </div>
-
-  <div class="overlay"></div>
-
-  <div class="card-login">
-    <div class="logo">
-      <i class="bi bi-shop"></i>
-    </div>
-
-    <h3 class="titulo">Sistema da Loja</h3>
-    <p class="subtitulo">Faça login para acessar o sistema</p>
-
-    <form id="formLogin">
-      <div class="input-group mb-3">
-        <span class="input-group-text">
-          <i class="bi bi-person"></i>
-        </span>
-        <input 
-          type="text"
-          id="usuario"
-          class="form-control"
-          placeholder="Usuário"
-          required>
+  <div class="login-wrapper">
+    <div class="login-card">
+      <div class="brand-box">
+        <div class="brand-icon">
+          <i class="bi bi-shop"></i>
+        </div>
+        <h1>Sistema da Loja</h1>
+        <p>Entre com seu usuário e senha para acessar o painel de controle da loja.</p>
       </div>
 
-      <div class="input-group mb-2">
-        <span class="input-group-text">
-          <i class="bi bi-lock"></i>
-        </span>
-        <input 
-          type="password"
-          id="senha"
-          class="form-control"
-          placeholder="Senha"
-          required>
-        <span class="input-group-text toggle-senha" id="toggleSenha">
-          <i class="bi bi-eye" id="iconeSenha"></i>
-        </span>
+      <div id="mensagem"></div>
+
+      <form id="formLogin" autocomplete="off">
+        <div class="mb-3">
+          <label for="usuario" class="form-label">Usuário</label>
+          <div class="input-icon-wrap">
+            <i class="bi bi-person icone-esquerda"></i>
+            <input
+              type="text"
+              id="usuario"
+              class="form-control"
+              placeholder="Digite seu usuário"
+              required>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="senha" class="form-label">Senha</label>
+          <div class="input-icon-wrap">
+            <i class="bi bi-lock icone-esquerda"></i>
+            <input
+              type="password"
+              id="senha"
+              class="form-control campo-senha"
+              placeholder="Digite sua senha"
+              required>
+            <button type="button" class="btn-mostrar-senha" id="btnMostrarSenha" title="Mostrar senha">
+              <i class="bi bi-eye" id="iconeSenha"></i>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-login w-100" id="btnEntrar">
+          <i class="bi bi-box-arrow-in-right"></i>
+          Entrar
+        </button>
+      </form>
+
+      <div class="tentativas-box" id="tentativasBox">
+        Tentativas restantes: <strong id="tentativasRestantes">3</strong>
       </div>
 
-      <div class="form-check mb-3">
-        <input class="form-check-input" type="checkbox" id="mostrarSenha">
-        <label class="form-check-label" for="mostrarSenha">
-          Mostrar senha
-        </label>
+      <div class="loading-box" id="loadingBox">
+        <div class="loading-texto">
+          <span>Entrando no sistema...</span>
+          <span id="loadingPercentual">0%</span>
+        </div>
+        <div class="progress">
+          <div
+            id="barraProgresso"
+            class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+            role="progressbar"
+            style="width: 0%">
+          </div>
+        </div>
       </div>
 
-      <button type="submit" class="btn btn-primary w-100 btn-entrar" id="btnEntrar">
-        <span id="textoBotao">
-          <i class="bi bi-box-arrow-in-right"></i> Entrar
-        </span>
-        <span id="loadingBotao" class="d-none">
-          <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-          Entrando...
-        </span>
-      </button>
-    </form>
+      <div class="login-info">
+        <strong>Acesso padrão:</strong><br>
+        Usuário: <code>admin</code><br>
+        Senha: <code>1234</code>
+      </div>
 
-    <div class="rodape-login">
-      Acesso restrito ao sistema
+      <div class="login-footer">
+        Controle da Loja © 2026
+      </div>
     </div>
   </div>
 
   <script>
-    const formLogin = document.getElementById("formLogin");
-    const usuario = document.getElementById("usuario");
-    const senha = document.getElementById("senha");
-    const btnEntrar = document.getElementById("btnEntrar");
-    const textoBotao = document.getElementById("textoBotao");
-    const loadingBotao = document.getElementById("loadingBotao");
-    const mostrarSenha = document.getElementById("mostrarSenha");
-    const toggleSenha = document.getElementById("toggleSenha");
-    const iconeSenha = document.getElementById("iconeSenha");
+    document.addEventListener("DOMContentLoaded", function () {
+      const formLogin = document.getElementById("formLogin");
+      const usuarioInput = document.getElementById("usuario");
+      const senhaInput = document.getElementById("senha");
+      const mensagem = document.getElementById("mensagem");
+      const btnEntrar = document.getElementById("btnEntrar");
+      const btnMostrarSenha = document.getElementById("btnMostrarSenha");
+      const iconeSenha = document.getElementById("iconeSenha");
+      const loadingBox = document.getElementById("loadingBox");
+      const barraProgresso = document.getElementById("barraProgresso");
+      const loadingPercentual = document.getElementById("loadingPercentual");
+      const tentativasRestantes = document.getElementById("tentativasRestantes");
 
-    function alternarSenha(){
-      if(senha.type === "password"){
-        senha.type = "text";
-        iconeSenha.className = "bi bi-eye-slash";
-        mostrarSenha.checked = true;
-      }else{
-        senha.type = "password";
-        iconeSenha.className = "bi bi-eye";
-        mostrarSenha.checked = false;
+      const CHAVE_TENTATIVAS = "tentativasLogin";
+      const CHAVE_BLOQUEIO_ATE = "loginBloqueadoAte";
+      const DURACAO_BLOQUEIO_MS = 30000;
+
+      if (localStorage.getItem("logado") === "true") {
+        window.location = "index.html";
+        return;
       }
-    }
 
-    mostrarSenha.addEventListener("change", function(){
-      if(this.checked){
-        senha.type = "text";
-        iconeSenha.className = "bi bi-eye-slash";
-      }else{
-        senha.type = "password";
-        iconeSenha.className = "bi bi-eye";
+      function mostrarMensagem(texto, tipo = "danger") {
+        mensagem.innerHTML = `
+          <div class="alert alert-${tipo} alert-custom mb-3" role="alert">
+            ${texto}
+          </div>
+        `;
       }
-    });
 
-    toggleSenha.addEventListener("click", alternarSenha);
+      function obterTentativas() {
+        const valor = Number(localStorage.getItem(CHAVE_TENTATIVAS));
+        return Number.isNaN(valor) ? 0 : valor;
+      }
 
-    formLogin.addEventListener("submit", function(e){
-      e.preventDefault();
+      function salvarTentativas(valor) {
+        localStorage.setItem(CHAVE_TENTATIVAS, String(valor));
+      }
 
-      textoBotao.classList.add("d-none");
-      loadingBotao.classList.remove("d-none");
-      btnEntrar.disabled = true;
+      function limparTentativas() {
+        localStorage.setItem(CHAVE_TENTATIVAS, "0");
+      }
 
-      setTimeout(() => {
-        if(usuario.value === "admin" && senha.value === "1234"){
-          localStorage.setItem("logado", "true");
-          window.location = "index.html";
-        }else{
-          alert("Usuário ou senha incorretos");
-          textoBotao.classList.remove("d-none");
-          loadingBotao.classList.add("d-none");
-          btnEntrar.disabled = false;
+      function obterBloqueioAte() {
+        const valor = Number(localStorage.getItem(CHAVE_BLOQUEIO_ATE));
+        return Number.isNaN(valor) ? 0 : valor;
+      }
+
+      function loginEstaBloqueado() {
+        return Date.now() < obterBloqueioAte();
+      }
+
+      function bloquearLoginTemporariamente() {
+        const bloqueadoAte = Date.now() + DURACAO_BLOQUEIO_MS;
+        localStorage.setItem(CHAVE_BLOQUEIO_ATE, String(bloqueadoAte));
+      }
+
+      function liberarLogin() {
+        localStorage.removeItem(CHAVE_BLOQUEIO_ATE);
+        limparTentativas();
+      }
+
+      function definirEstadoCampos(bloqueado) {
+        btnEntrar.disabled = bloqueado;
+        usuarioInput.disabled = bloqueado;
+        senhaInput.disabled = bloqueado;
+        btnMostrarSenha.disabled = bloqueado;
+      }
+
+      function atualizarTentativasUI() {
+        if (loginEstaBloqueado()) {
+          tentativasRestantes.textContent = "0";
+        } else {
+          const tentativas = obterTentativas();
+          const restantes = Math.max(0, 3 - tentativas);
+          tentativasRestantes.textContent = restantes;
         }
-      }, 1500);
+      }
+
+      function iniciarContagemBloqueio() {
+        definirEstadoCampos(true);
+
+        const intervalo = setInterval(() => {
+          const restanteMs = obterBloqueioAte() - Date.now();
+
+          if (restanteMs <= 0) {
+            clearInterval(intervalo);
+            liberarLogin();
+            definirEstadoCampos(false);
+            atualizarTentativasUI();
+            mostrarMensagem("Bloqueio encerrado. Você pode tentar novamente.", "success");
+            return;
+          }
+
+          const segundos = Math.ceil(restanteMs / 1000);
+          mostrarMensagem(`Muitas tentativas incorretas. Tente novamente em ${segundos}s.`, "danger");
+        }, 250);
+
+        const restanteInicial = Math.ceil((obterBloqueioAte() - Date.now()) / 1000);
+        mostrarMensagem(`Muitas tentativas incorretas. Tente novamente em ${restanteInicial}s.`, "danger");
+      }
+
+      function iniciarCarregamentoLogin() {
+        let progresso = 0;
+
+        btnEntrar.disabled = true;
+        usuarioInput.disabled = true;
+        senhaInput.disabled = true;
+        btnMostrarSenha.disabled = true;
+        loadingBox.classList.add("ativo");
+
+        const intervalo = setInterval(() => {
+          progresso += 10;
+          barraProgresso.style.width = `${progresso}%`;
+          loadingPercentual.textContent = `${progresso}%`;
+
+          if (progresso >= 100) {
+            clearInterval(intervalo);
+            localStorage.setItem("logado", "true");
+            window.location = "index.html";
+          }
+        }, 120);
+      }
+
+      btnMostrarSenha.addEventListener("click", function () {
+        const tipoAtual = senhaInput.getAttribute("type");
+
+        if (tipoAtual === "password") {
+          senhaInput.setAttribute("type", "text");
+          iconeSenha.className = "bi bi-eye-slash";
+          btnMostrarSenha.setAttribute("title", "Ocultar senha");
+        } else {
+          senhaInput.setAttribute("type", "password");
+          iconeSenha.className = "bi bi-eye";
+          btnMostrarSenha.setAttribute("title", "Mostrar senha");
+        }
+      });
+
+      formLogin.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        if (loginEstaBloqueado()) {
+          iniciarContagemBloqueio();
+          atualizarTentativasUI();
+          return;
+        }
+
+        const usuario = usuarioInput.value.trim();
+        const senha = senhaInput.value.trim();
+
+        if (!usuario || !senha) {
+          mostrarMensagem("Preencha usuário e senha.", "warning");
+          return;
+        }
+
+        if (usuario === "admin" && senha === "1234") {
+          liberarLogin();
+          mostrarMensagem("Login realizado com sucesso.", "success");
+          iniciarCarregamentoLogin();
+        } else {
+          const tentativas = obterTentativas() + 1;
+          salvarTentativas(tentativas);
+
+          if (tentativas >= 3) {
+            bloquearLoginTemporariamente();
+            atualizarTentativasUI();
+            iniciarContagemBloqueio();
+            return;
+          }
+
+          const restantes = 3 - tentativas;
+          mostrarMensagem(`Usuário ou senha inválidos. Restam ${restantes} tentativa(s).`, "danger");
+          atualizarTentativasUI();
+        }
+      });
+
+      atualizarTentativasUI();
+
+      if (loginEstaBloqueado()) {
+        iniciarContagemBloqueio();
+      } else {
+        definirEstadoCampos(false);
+      }
     });
   </script>
-
 </body>
 </html>

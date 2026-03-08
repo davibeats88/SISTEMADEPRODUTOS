@@ -6,9 +6,14 @@ document.addEventListener("DOMContentLoaded", function () {
   const categoriaInput = document.getElementById("categoria");
   const buscaInput = document.getElementById("busca");
   const tabelaProdutos = document.getElementById("tabelaProdutos");
+  const tabelaHistoricoVendas = document.getElementById("tabelaHistoricoVendas");
+  const comprovanteVenda = document.getElementById("comprovanteVenda");
+  const totalVendasBadge = document.getElementById("totalVendasBadge");
   const botaoSalvar = formProduto ? formProduto.querySelector("button[type='submit']") : null;
 
   let produtos = JSON.parse(localStorage.getItem("produtos")) || [];
+  let historicoVendas = JSON.parse(localStorage.getItem("historicoVendas")) || [];
+  let ultimaVenda = JSON.parse(localStorage.getItem("ultimaVenda")) || null;
   let editandoIndex = null;
 
   const paginaAtual = window.location.pathname.split("/").pop();
@@ -24,10 +29,27 @@ document.addEventListener("DOMContentLoaded", function () {
     localStorage.setItem("produtos", JSON.stringify(produtos));
   }
 
+  function salvarHistoricoVendas() {
+    localStorage.setItem("historicoVendas", JSON.stringify(historicoVendas));
+  }
+
+  function salvarUltimaVenda() {
+    localStorage.setItem("ultimaVenda", JSON.stringify(ultimaVenda));
+  }
+
   function formatarMoeda(valor) {
     return Number(valor).toLocaleString("pt-BR", {
       style: "currency",
       currency: "BRL"
+    });
+  }
+
+  function formatarData(dataIso) {
+    const data = new Date(dataIso);
+
+    return data.toLocaleString("pt-BR", {
+      dateStyle: "short",
+      timeStyle: "short"
     });
   }
 
@@ -96,6 +118,38 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  function aplicarTemaSalvo() {
+    const tema = localStorage.getItem("temaLoja") || "escuro";
+    const body = document.body;
+    const iconeTema = document.getElementById("iconeTema");
+    const textoTema = document.getElementById("textoTema");
+
+    if (tema === "claro") {
+      body.classList.add("tema-claro");
+      if (iconeTema) iconeTema.className = "bi bi-sun";
+      if (textoTema) textoTema.textContent = "Modo claro";
+    } else {
+      body.classList.remove("tema-claro");
+      if (iconeTema) iconeTema.className = "bi bi-moon-stars";
+      if (textoTema) textoTema.textContent = "Modo escuro";
+    }
+  }
+
+  function alternarTema() {
+    const body = document.body;
+    const estaClaro = body.classList.contains("tema-claro");
+
+    if (estaClaro) {
+      body.classList.remove("tema-claro");
+      localStorage.setItem("temaLoja", "escuro");
+    } else {
+      body.classList.add("tema-claro");
+      localStorage.setItem("temaLoja", "claro");
+    }
+
+    aplicarTemaSalvo();
+  }
+
   function limparFormulario() {
     if (!formProduto) return;
 
@@ -114,16 +168,16 @@ document.addEventListener("DOMContentLoaded", function () {
       return total + Number(produto.quantidade || 0);
     }, 0);
 
-    const miniCards = document.querySelectorAll(".mini-card strong");
+    const totalVendas = historicoVendas.length;
 
-    if (miniCards[0]) miniCards[0].textContent = `${totalProdutos} produtos`;
-    if (miniCards[1]) miniCards[1].textContent = `${totalItens} itens`;
-    if (miniCards[2]) miniCards[2].textContent = `Loja principal`;
+    const totalProdutosInfo = document.getElementById("totalProdutosInfo");
+    const totalEstoqueInfo = document.getElementById("totalEstoqueInfo");
+    const totalCadastradosBadge = document.getElementById("totalCadastradosBadge");
 
-    const badge = document.querySelector(".badge-soft");
-    if (badge) {
-      badge.textContent = `Total cadastrados: ${totalProdutos}`;
-    }
+    if (totalProdutosInfo) totalProdutosInfo.textContent = `${totalProdutos} produtos`;
+    if (totalEstoqueInfo) totalEstoqueInfo.textContent = `${totalItens} itens`;
+    if (totalCadastradosBadge) totalCadastradosBadge.textContent = `Total cadastrados: ${totalProdutos}`;
+    if (totalVendasBadge) totalVendasBadge.textContent = `Total de vendas: ${totalVendas}`;
   }
 
   function atualizarTabela() {
@@ -184,6 +238,83 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     atualizarContadores();
+  }
+
+  function atualizarHistoricoVendas() {
+    if (!tabelaHistoricoVendas) return;
+
+    tabelaHistoricoVendas.innerHTML = "";
+
+    if (historicoVendas.length === 0) {
+      tabelaHistoricoVendas.innerHTML = `
+        <tr>
+          <td colspan="5" class="text-center text-muted">Nenhuma venda registrada.</td>
+        </tr>
+      `;
+      atualizarContadores();
+      return;
+    }
+
+    const vendasOrdenadas = [...historicoVendas].reverse();
+
+    vendasOrdenadas.forEach((venda, index) => {
+      const indiceOriginal = historicoVendas.length - 1 - index;
+
+      const tr = document.createElement("tr");
+
+      tr.innerHTML = `
+        <td>${formatarData(venda.data)}</td>
+        <td><strong>${venda.produto}</strong></td>
+        <td>${venda.quantidade}</td>
+        <td>${formatarMoeda(venda.total)}</td>
+        <td>
+          <button class="btn btn-sm btn-outline-primary" data-comprovante="${indiceOriginal}" title="Ver comprovante">
+            <i class="bi bi-receipt"></i>
+          </button>
+        </td>
+      `;
+
+      tabelaHistoricoVendas.appendChild(tr);
+    });
+
+    atualizarContadores();
+  }
+
+  function atualizarComprovante(venda) {
+    if (!comprovanteVenda) return;
+
+    if (!venda) {
+      comprovanteVenda.innerHTML = `
+<div class="cupom-titulo">CUPOM DE VENDA</div>
+--------------------------------
+Loja: Loja principal
+Cliente: Não informado
+Produto: --
+Categoria: --
+Qtd: --
+Unitário: R$ 0,00
+Total: R$ 0,00
+Data: --
+--------------------------------
+Obrigado pela preferência
+      `;
+      return;
+    }
+
+    comprovanteVenda.innerHTML = `
+<div class="cupom-titulo">CUPOM DE VENDA</div>
+--------------------------------
+Loja: Loja principal
+Cliente: ${venda.cliente || "Não informado"}
+Produto: ${venda.produto}
+Categoria: ${venda.categoria}
+Qtd: ${venda.quantidade}
+Unitário: ${formatarMoeda(venda.valorUnitario)}
+Total: ${formatarMoeda(venda.total)}
+Data: ${formatarData(venda.data)}
+--------------------------------
+Obrigado pela preferência
+    `;
   }
 
   function editarProduto(index) {
@@ -249,16 +380,126 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
+    if (!Number.isInteger(quantidadeVenda)) {
+      mostrarToast("Digite uma quantidade inteira.", "warning");
+      return;
+    }
+
     if (quantidadeVenda > Number(produto.quantidade)) {
       mostrarToast("Estoque insuficiente para essa venda.", "danger");
       return;
     }
 
+    const clienteInformado = prompt("Nome do cliente (opcional):");
+    if (clienteInformado === null) return;
+
+    const cliente = clienteInformado.trim() || "Não informado";
+    const totalVenda = Number(produto.preco) * quantidadeVenda;
+
+    const confirmar = confirm(
+      `Confirmar venda?\n\nProduto: ${produto.nome}\nQuantidade: ${quantidadeVenda}\nTotal: ${formatarMoeda(totalVenda)}`
+    );
+
+    if (!confirmar) return;
+
     produto.quantidade = Number(produto.quantidade) - quantidadeVenda;
 
+    const venda = {
+      produto: produto.nome,
+      categoria: produto.categoria,
+      quantidade: quantidadeVenda,
+      valorUnitario: Number(produto.preco),
+      total: totalVenda,
+      cliente: cliente,
+      data: new Date().toISOString()
+    };
+
+    historicoVendas.push(venda);
+    ultimaVenda = venda;
+
     salvarProdutos();
+    salvarHistoricoVendas();
+    salvarUltimaVenda();
+
     atualizarTabela();
+    atualizarHistoricoVendas();
+    atualizarComprovante(ultimaVenda);
+
     mostrarToast("Venda registrada com sucesso.", "success");
+  }
+
+  function mostrarComprovantePorIndice(index) {
+    const venda = historicoVendas[index];
+    if (!venda) return;
+
+    ultimaVenda = venda;
+    salvarUltimaVenda();
+    atualizarComprovante(venda);
+    mostrarToast("Comprovante carregado.", "info");
+  }
+
+  function imprimirComprovante() {
+    if (!ultimaVenda) {
+      mostrarToast("Nenhum comprovante disponível para impressão.", "warning");
+      return;
+    }
+
+    const janela = window.open("", "_blank");
+
+    if (!janela) {
+      mostrarToast("Não foi possível abrir a janela de impressão.", "danger");
+      return;
+    }
+
+    janela.document.write(`
+      <html>
+        <head>
+          <title>Cupom de Venda</title>
+          <style>
+            body {
+              font-family: "Courier New", monospace;
+              padding: 24px;
+              color: #000;
+              background: #fff;
+            }
+
+            .cupom {
+              max-width: 320px;
+              margin: 0 auto;
+              font-size: 14px;
+              line-height: 1.6;
+              white-space: pre-line;
+            }
+
+            .titulo {
+              text-align: center;
+              font-weight: bold;
+              margin-bottom: 10px;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="cupom">
+<div class="titulo">CUPOM DE VENDA</div>
+--------------------------------
+Loja: Loja principal
+Cliente: ${ultimaVenda.cliente || "Não informado"}
+Produto: ${ultimaVenda.produto}
+Categoria: ${ultimaVenda.categoria}
+Qtd: ${ultimaVenda.quantidade}
+Unitário: ${formatarMoeda(ultimaVenda.valorUnitario)}
+Total: ${formatarMoeda(ultimaVenda.total)}
+Data: ${formatarData(ultimaVenda.data)}
+--------------------------------
+Obrigado pela preferência
+          </div>
+        </body>
+      </html>
+    `);
+
+    janela.document.close();
+    janela.focus();
+    janela.print();
   }
 
   function logout() {
@@ -335,8 +576,23 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  window.logout = logout;
+  if (tabelaHistoricoVendas) {
+    tabelaHistoricoVendas.addEventListener("click", function (e) {
+      const botaoComprovante = e.target.closest("[data-comprovante]");
 
+      if (botaoComprovante) {
+        mostrarComprovantePorIndice(Number(botaoComprovante.getAttribute("data-comprovante")));
+      }
+    });
+  }
+
+  window.logout = logout;
+  window.imprimirComprovante = imprimirComprovante;
+  window.alternarTema = alternarTema;
+
+  aplicarTemaSalvo();
   atualizarTabela();
+  atualizarHistoricoVendas();
+  atualizarComprovante(ultimaVenda);
   atualizarContadores();
 });
